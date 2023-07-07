@@ -6,10 +6,10 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const envVarsSchema = Joi.object()
   .keys({
-    NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
+    NODE_ENV: Joi.string().valid('production', 'development', 'test'),
     PORT: Joi.number().default(3000),
-    MONGODB_URL: Joi.string().required().description('Mongo DB url'),
-    JWT_SECRET: Joi.string().required().description('JWT secret key'),
+    MONGODB_URL: Joi.string().description('Mongo DB url'),
+    JWT_SECRET: Joi.string().description('JWT secret key'),
     JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which access tokens expire'),
     JWT_REFRESH_EXPIRATION_DAYS: Joi.number().default(30).description('days after which refresh tokens expire'),
     JWT_RESET_PASSWORD_EXPIRATION_MINUTES: Joi.number()
@@ -33,10 +33,10 @@ if (error) {
 }
 
 module.exports = {
-  env: envVars.NODE_ENV,
+  env: envVars.NODE_ENV || 'development',
   port: envVars.PORT,
   mongoose: {
-    url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
+    url: (envVars.MONGODB_URL || "mongodb+srv://hamdiRH:hamdiRH@cluster0.lze9n.mongodb.net/") + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {
       useCreateIndex: true,
       useNewUrlParser: true,
@@ -44,7 +44,7 @@ module.exports = {
     },
   },
   jwt: {
-    secret: envVars.JWT_SECRET,
+    secret: envVars.JWT_SECRET || "thisisasamplesecret",
     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
     resetPasswordExpirationMinutes: envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
