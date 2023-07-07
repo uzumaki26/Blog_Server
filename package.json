@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "module": "commonjs",
+  "type": "module"
   "scripts": {
     "start": "npm run build && node ./dist/server.js",
     "build": "tsc --project ./",
